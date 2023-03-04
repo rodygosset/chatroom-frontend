@@ -1,0 +1,103 @@
+
+@import "@styles/base/_reset.scss";
+@import "@styles/base/_mixins.scss";
+@import "@styles/base/_typography.module.scss";
+@import "@styles/abstracts/_colors.module.scss";
+
+@mixin button-styler ($bg-color, $text-color) {
+    background: $bg-color;
+    color: $text-color;
+}
+
+@mixin make-primary-button($main-color, $main-color-faded) {
+
+    @include button-styler($main-color-faded, $white);
+
+    &.active {
+        @include button-styler($main-color, $white);
+        
+        &.animateOnHover:hover {
+            transform: scale(1.1);
+            @include spread-shadow-colored($main-color);
+        }
+    }
+}
+
+
+@mixin make-secondary-button($main-color, $main-color-faded, $main-color-background) {
+
+    @include button-styler($main-color-background, $main-color-faded);
+
+    &.active {
+
+        @include button-styler($main-color-background, $main-color);
+
+        &.animateOnHover:hover {
+            background: $main-color;
+            color: $white;
+            transform: scale(1.1);
+            @include spread-shadow-colored($main-color);
+        }
+
+    }
+
+} 
+
+@mixin make-tertiary-button($main-color, $main-color-faded, $main-color-background) {
+
+    @include button-styler(none, $main-color-faded);
+
+    &.active {
+
+        @include button-styler(none, $main-color);
+
+        &.animateOnHover:hover {
+            &:not(.bigPadding) {
+                padding: 10px 20px;
+            }
+            background: $main-color-background;
+        }
+
+    }
+
+}
+
+.button {
+    @include reset-button;
+    @include flex-container(row, nowrap, center, center);
+    @include button-text;
+    width: fit-content;
+    gap: 10px;
+    border-radius: 5px;
+
+    &.primary {
+
+        @include make-primary-button($primary, $primary-600);
+
+    }
+
+    &.secondary {
+
+        @include make-secondary-button($primary, $primary-600, $primary-100);
+        
+    }
+
+    &.tertiary {
+
+        @include make-tertiary-button($primary, $primary-600, $primary-100);
+
+    }
+
+    &.withPadding {
+
+        padding: 10px 20px;
+    }
+
+    &.bigPadding {
+        padding: 15px 20px;
+    }
+
+    &.fullWidth {
+        width: 100%;
+    }
+}

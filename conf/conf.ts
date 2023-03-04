@@ -8,6 +8,7 @@ export const apiURL = "localhost:8080/php/ChatRoom/index.php"
 
 export const registerURL = `${apiURL}?ctrl=user&action=register`
 export const loginURL = `${apiURL}?ctrl=user&action=authenticate`
+export const currentUserURL = `${apiURL}?ctrl=user&action=me`
 export const authCheckURL = `${apiURL}?ctrl=user&action=hello`
 
 // models URL
