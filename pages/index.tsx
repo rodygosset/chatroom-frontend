@@ -1,6 +1,8 @@
+import Button from '@components/button'
 import { MySession } from '@conf/utility-types'
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import Head from 'next/head'
+import { useEffect } from 'react'
 
 export default function Home() {
 
@@ -10,6 +12,8 @@ export default function Home() {
     
     const user = (session.data as MySession | null)?.user
 
+	useEffect(() => console.log(session.data), [session])
+
 	return (
 	<>
 		<Head>
@@ -18,7 +22,8 @@ export default function Home() {
 			<meta name="viewport" content="width=device-width, initial-scale=1" />
 		</Head>
 		<main>
-			<h1>Welcome back, {user?.email}</h1>
+			<h1>Welcome back, {user?.first_name}</h1>
+			<Button onClick={signOut}>Sign out</Button>
 		</main>
 	</>
 	)

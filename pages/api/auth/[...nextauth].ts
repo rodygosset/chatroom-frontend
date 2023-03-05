@@ -19,7 +19,7 @@ export const authOptions: AuthOptions = {
 
             // build the form data 
             const formData = new FormData()
-            formData.append('username', credentials.username)
+            formData.append('email', credentials.email)
             formData.append('password', credentials.password)
 
             // send the credentials to the API login endpoint
@@ -31,12 +31,12 @@ export const authOptions: AuthOptions = {
                 // get user data
                 const { data: userData } = await axios.get<User>(currentUserURL, {
                     headers: {
-                        Authorization: `bearer ${res.data.access_token}` 
+                        Authorization: `Bearer ${res.data}` 
                     }
                 })
                 // return the access token along with user data
                 return {
-                    access_token: res.data.access_token,
+                    access_token: res.data,
                     ...userData
                 }
 
@@ -62,6 +62,7 @@ export const authOptions: AuthOptions = {
                 token = { access_token: user.access_token }
                 // @ts-ignore
                 delete user.access_token
+                token.user = user
             }
             return token
         },

@@ -1,74 +1,70 @@
 import FieldContainer from "@components/form-elements/field-container"
 import Label from "@components/form-elements/label"
 import TextInput from "@components/form-elements/text-input"
-import { faArrowRight, faArrowUpRightFromSquare, faMessage, faRightToBracket } from "@fortawesome/free-solid-svg-icons"
+import { faArrowUpRightFromSquare, faMessage, faRightToBracket } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styles from "@styles/pages/login.module.scss"
 import { NextPage } from "next"
 import Head from "next/head"
 import { useRouter } from "next/router"
-import { FormEvent, FormEventHandler, useState } from "react"
+import { FormEvent, FormEventHandler, useEffect, useState } from "react"
 
-import { signIn, useSession } from "next-auth/react"
+import { signOut } from "next-auth/react"
 import Button from "@components/button"
 import Link from "next/link"
+import axios from "axios"
+import { User, UserCreate } from "@conf/data-types"
+import { registerURL } from "@conf/conf"
 
 
-const Login: NextPage = () => {
+const Register: NextPage = () => {
 
     const router = useRouter()
 
     let returnUrl = router.query.returnUrl?.toString() || '/';
 
-    // if the return url is /login, change it to the home page
-    if(returnUrl == "/login") { returnUrl = '/' }
-
-
-    // if the user's already authenticated, redirect to returnUrl
-
-    const { status } = useSession()
-
-    if(status == "authenticated") {
-        router.push(returnUrl)
-    }
+    // navigating to this page automatically signs the user out
+    // useEffect(() => {
+    //     signOut()
+    // }, [])
 
     // state
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
 
-    const [signInFailed, setSignInFailed] = useState(false)
+
+    const [signUpFailed, setSignUpFailed] = useState(false)
 
     const handleSubmit = async (event: FormEvent | MouseEvent) =>{
         event.preventDefault()
-        signIn(
-            "credentials", 
-            { 
-                email: email, 
-                password: password, 
-                redirect: false
-            }
-        ).then((response) => {
+        const formData = new FormData();
+        formData.append('email', email)
+        formData.append('password', password)
+        formData.append('first_name', firstName)
+        formData.append('last_name', lastName)
+        axios.post<UserCreate>(registerURL, formData)
+        .then((response) => {
             if(!response) return
-            console.log(response)
-            const { ok } = response
-            ok ? router.push(returnUrl) : setSignInFailed(true)
+            response.status == 200 ? router.push(returnUrl) : setSignUpFailed(true)
         })
     }
 
     return (
         <main id={styles.container}>
             <Head>
-                <title>Sign In</title>
+                <title>Sign Up</title>
                 <meta 
                     name="description" 
-                    content="Sign into the ChatRoom App" 
+                    content="Sign up for the ChatRoom App" 
                 />
             </Head>
             <section id={styles.loginForm}>
                 <section id={styles.greeting}>
-                    <h2>Welcome back</h2>
-                    <p>Sign in to start chatting :)</p>
+                    <h2>Hello!</h2>
+                    <p>Sign up to start chatting :)</p>
                 </section>
                 <form 
                     name="login" 
@@ -83,6 +79,28 @@ const Login: NextPage = () => {
                             required
                         />
                     </FieldContainer>
+                    <div className={styles.fieldGroup}>
+                        <FieldContainer>
+                            <Label htmlFor="firstName">First Name</Label>
+                            <TextInput 
+                                placeholder="John"
+                                onChange={setFirstName}
+                                name={"firstName"}
+                                currentValue={firstName}
+                                required
+                            />
+                        </FieldContainer>
+                        <FieldContainer>
+                            <Label htmlFor="lastName">Last Name</Label>
+                            <TextInput 
+                                placeholder="Doe"
+                                onChange={setLastName}
+                                name={"lastName"}
+                                currentValue={lastName}
+                                required
+                            />
+                        </FieldContainer>
+                    </div>
                     <FieldContainer>
                         <Label htmlFor="password">Password</Label>
                         <TextInput 
@@ -95,17 +113,17 @@ const Login: NextPage = () => {
                         />
                     </FieldContainer>
                     <Button 
-                        icon={faArrowRight}
+                        icon={faRightToBracket}
                         type="submit"
                         onClick={handleSubmit}
                         fullWidth
                         bigPadding
                     >
-                        Sign In
+                        Create account
                     </Button>
-                    <p>Don&apos;t have an account ? <Link href="/register">Sign up <FontAwesomeIcon icon={faArrowUpRightFromSquare}/></Link></p>
+                    <p>Already have an account ? <Link href="/login">Sign in <FontAwesomeIcon icon={faArrowUpRightFromSquare}/></Link></p>
                 </form>
-                <p className={styles.error + (signInFailed ? ' ' + styles.showError : '')}>Invalid credentials</p>
+                <p className={styles.error + (signUpFailed ? ' ' + styles.showError : '')}>An error occured</p>
             </section>
             <section id={styles.hero}>
                 <div className={styles.appName}>
@@ -119,4 +137,4 @@ const Login: NextPage = () => {
     )
 }
 
-export default Login
+export default Register

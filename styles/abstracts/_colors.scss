@@ -11,6 +11,8 @@ $success-400: rgba($success, 0.4);
 $success-200: rgba($success, 0.2);
 $success-100: rgba($success, 0.1);
 
+$main-gradient: linear-gradient(150deg, $primary 0%, $success 100%);
+
 
 $error: #D92D20;
 $error-600: rgba($error, 0.6);

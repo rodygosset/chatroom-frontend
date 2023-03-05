@@ -1,0 +1,30 @@
+@import "@styles/base/_reset.scss";
+@import "@styles/base/_mixins.scss";
+@import "@styles/base/_typography.scss";
+@import "@styles/abstracts/_colors.scss";
+@import "@styles/abstracts/_variables.scss";
+
+
+.textInput {
+    @include reset-form-input;
+    @include text-sm-regular;
+    color: $white;
+    width: 100%;
+    background: transparent;
+
+    &::placeholder {
+        color: $white-600;
+    }
+
+    &.error {
+        @include error-state;
+    } 
+}
+
+.textInput:-webkit-autofill {
+    -webkit-text-fill-color: $white !important;
+}
+
+input.textInput:-internal-autofill-selected {
+    background-color: -internal-light-dark(transparent) !important;
+}

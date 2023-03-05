@@ -2,7 +2,7 @@
 
 // URLs
 
-export const apiURL = "localhost:8080/php/ChatRoom/index.php"
+export const apiURL = "http://localhost:8080/php/ChatRoom/index.php"
 
 // auth
 

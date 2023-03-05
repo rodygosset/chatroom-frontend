@@ -44,7 +44,8 @@ const RouteGard = ({ children }: Props) => {
     const authCheck = (url: string) => {
         const publicURLs = [
             '/login',
-            '/404'
+            '/404',
+            '/register'
         ]
         const path = url.split('?')[0]
         // in case the current route is public
@@ -65,7 +66,7 @@ const RouteGard = ({ children }: Props) => {
             // try to get data from an authenticated API route
             // using our session access token
             axios.get(authCheckURL, {
-                headers: { Authorization: `bearer ${session?.access_token}` }
+                headers: { Authorization: `Bearer ${session?.access_token}` }
             })
             // if the request succeeds
             // show the current page
