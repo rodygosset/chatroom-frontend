@@ -1,0 +1,45 @@
+@import "@styles/base/_reset.scss";
+@import "@styles/base/_mixins.scss";
+@import "@styles/base/_typography.scss";
+@import "@styles/abstracts/_colors.scss";
+@import "@styles/abstracts/_variables.scss";
+
+
+.header {
+    @include flex-container(row, nowrap, space-between, center);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: $nav-bar-height;
+    padding: 0 2.5vw;
+    background: $black;
+    z-index: 999;
+
+    .logoContainer {
+        @include flex-container(row, nowrap, center, center);
+        @include text-md-medium;
+        gap: 20px;
+        color: $white;
+
+        svg {
+           font-size: 2rem; 
+        }
+
+    }
+
+    nav {
+        @include flex-container(row, nowrap, center, center);
+        gap: 20px;
+    }
+
+    button.logOutButton {
+        color: $white-600 !important;
+
+        &:hover {
+            color: $white !important;
+        }
+
+    }
+
+}

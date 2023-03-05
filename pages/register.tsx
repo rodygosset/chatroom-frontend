@@ -38,7 +38,7 @@ const Register: NextPage = () => {
 
     const [signUpFailed, setSignUpFailed] = useState(false)
 
-    const handleSubmit = async (event: FormEvent | MouseEvent) =>{
+    const handleSubmit = (event: FormEvent | MouseEvent) => {
         event.preventDefault()
         const formData = new FormData();
         formData.append('email', email)

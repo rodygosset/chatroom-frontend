@@ -39,7 +39,7 @@ const Login: NextPage = () => {
 
     const [signInFailed, setSignInFailed] = useState(false)
 
-    const handleSubmit = async (event: FormEvent | MouseEvent) =>{
+    const handleSubmit = (event: FormEvent | MouseEvent) => {
         event.preventDefault()
         signIn(
             "credentials", 
@@ -50,7 +50,6 @@ const Login: NextPage = () => {
             }
         ).then((response) => {
             if(!response) return
-            console.log(response)
             const { ok } = response
             ok ? router.push(returnUrl) : setSignInFailed(true)
         })

@@ -83,7 +83,7 @@
 
     &.tertiary {
 
-        @include make-tertiary-button($primary, $primary-600, $primary-100);
+        @include make-tertiary-button($white, $white-600, $white-100);
 
     }
 
