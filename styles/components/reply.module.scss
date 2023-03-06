@@ -24,7 +24,11 @@
     }
 
     .replyButton {
-        border: 1px solid $white-100;
+        color: $primary !important;
+    }
+
+    ul {
+        @include reset-list;
     }
 
 }

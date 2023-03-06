@@ -1,6 +1,6 @@
 import Button from "@components/button"
 import { messageURL } from "@conf/conf";
-import { MessageCreate } from "@conf/data-types";
+import { Message, MessageCreate } from "@conf/data-types";
 import { MySession } from "@conf/utility-types";
 import styles from "@styles/components/form-elements/message-input.module.scss"
 import axios from "axios";
@@ -8,13 +8,13 @@ import { useSession } from "next-auth/react";
 import { useState } from "react"
 
 interface Props {
-    messageReplyID: string | null;
+    parentMessage?: Message;
     refresh: () => void;
 }
 
 const MessageInput = (
     {
-        messageReplyID,
+        parentMessage,
         refresh
     }: Props
 ) => {
@@ -30,32 +30,43 @@ const MessageInput = (
     // handlers
 
     const handleSend = () => {
-        if(!messageReplyID) return
+        if(!parentMessage) return
         const formData = new FormData()
         formData.append("content", message)
-        formData.append("parent_id", messageReplyID)
+        formData.append("parent_id", parentMessage._id)
         axios.post<MessageCreate>(`${messageURL}&action=post`, formData, {
             headers: { Authorization: `Bearer ${sessionData?.access_token}` }
-        }).then(refresh)
+        }).then(() => {
+            setMessage("")
+            refresh()
+        })
     }
 
     // render
 
     return (
-        <div className={styles.messageInput}>
-            <input 
-                type="text" 
-                name="message"
-                placeholder="Type message..."
-                value={message}
-                onChange={e => setMessage(e.target.value)}
-            />
-            <Button
-                onClick={handleSend}>
-                Send
-            </Button>
+        <div className={styles.wrapper}>
+            {
+                parentMessage ?
+                <p>Replying to {parentMessage.author_full_name}: &rdquo;{parentMessage.content}&rdquo;</p>
+                :
+                <></>
+            }
+            <div className={styles.messageInput}>
+                <input 
+                    type="text" 
+                    name="message"
+                    placeholder="Type message..."
+                    value={message}
+                    onChange={e => setMessage(e.target.value)}
+                />
+                <Button
+                    active={parentMessage?._id ? true : false}
+                    onClick={handleSend}>
+                    Send
+                </Button>
+            </div>
         </div>
-        
     )
 
 }

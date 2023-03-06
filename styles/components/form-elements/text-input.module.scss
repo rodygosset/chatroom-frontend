@@ -19,6 +19,8 @@
     &.error {
         @include error-state;
     } 
+
+    resize: vertical;
 }
 
 .textInput:-webkit-autofill {

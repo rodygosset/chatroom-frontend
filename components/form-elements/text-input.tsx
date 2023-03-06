@@ -11,6 +11,7 @@ interface Props {
     defaultValue?: string;
     currentValue?: string;
     password?: boolean;
+    isTextArea?: boolean;
     required?: boolean;
     isInErrorState?: boolean;
 }
@@ -23,6 +24,7 @@ const TextInput = ({
         defaultValue, 
         currentValue, 
         password,
+        isTextArea,
         required,
         isInErrorState
     }: Props) => {
@@ -40,16 +42,31 @@ const TextInput = ({
     }
 
     return (
-        <input 
-            className={getClassNames()}
-            name={name ? name : undefined}
-            type={password ? "password" : "text"}
-            placeholder={placeholder ? placeholder : undefined}
-            onChange={handleChange}
-            defaultValue={defaultValue ? defaultValue : undefined}
-            value={currentValue}
-            required={required}
-        />
+        <>
+        {
+            isTextArea ?
+            <textarea 
+                className={getClassNames()}
+                name={name}
+                placeholder={placeholder}
+                onChange={handleChange}
+                defaultValue={defaultValue}
+                value={currentValue}
+                required={required}
+            />   
+            :
+            <input 
+                className={getClassNames()}
+                name={name ? name : undefined}
+                type={password ? "password" : "text"}
+                placeholder={placeholder ? placeholder : undefined}
+                onChange={handleChange}
+                defaultValue={defaultValue ? defaultValue : undefined}
+                value={currentValue}
+                required={required}
+            />
+        }
+        </>
         
     )
 }

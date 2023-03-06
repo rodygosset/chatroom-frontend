@@ -1,5 +1,5 @@
 import { threadsURL } from "@conf/conf";
-import { Thread } from "@conf/data-types";
+import { getDirectReplies, getMessageReplies, Message, Thread } from "@conf/data-types";
 import { MySession } from "@conf/utility-types";
 import styles from "@styles/components/thread-viewer.module.scss"
 import { getUIDate } from "@utils/general";
@@ -39,11 +39,14 @@ const ThreadViewer = (
         if(!threadID) return
         axios.get(`${threadsURL}&action=getOne&id=${threadID}`, {
             headers: { Authorization: `Bearer ${sessionData?.access_token}` }
-        }).then(res => setThread(res.data))
+        }).then(res => {
+            setThread(res.data)
+        })
     }, [threadID, refreshTrigger])
 
     useEffect(() => {
         if(!thread) return
+        console.log(thread)
         setMessageReplyID(thread.first_message_id)
     }, [thread])
 
@@ -56,6 +59,12 @@ const ThreadViewer = (
     }
 
     const getFirstMessage = () => thread ? thread.messages.find(message => message._id == thread.first_message_id) : undefined
+
+    const getParentMessage = () => thread ? thread.messages.find(message => message._id == messageReplyID) : undefined
+
+    const [parentMessage, setParentMessage] = useState<Message>()
+
+    useEffect(() => setParentMessage(getParentMessage()), [messageReplyID])
 
     // render
 
@@ -73,13 +82,15 @@ const ThreadViewer = (
                 <ul>
                 {
                     thread ?
-                    thread.messages.map((message, index) => {
+                    getDirectReplies(thread.first_message_id, thread.messages).map((message, index) => {
                         if(message._id == thread.first_message_id) return
                         return (
                             <Reply 
                                 key={message.author_full_name + "_" + index}
                                 message={message}
                                 onReply={() => setMessageReplyID(message._id)}
+                                replies={getMessageReplies(message._id, thread.messages)}
+                                setMessageReplyID={setMessageReplyID}
                             />
                         )
                     })
@@ -88,7 +99,7 @@ const ThreadViewer = (
                 }
                 </ul>
                 <MessageInput 
-                    messageReplyID={messageReplyID}
+                    parentMessage={parentMessage}
                     refresh={refresh}
                 />
             </>

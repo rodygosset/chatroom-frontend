@@ -2,27 +2,48 @@
 @import "@styles/base/_typography.scss";
 @import "@styles/abstracts/_colors.scss";
 
-.messageInput {
 
-    @include flex-container(row, nowrap, flex-start, center);
-    padding: 10px 20px;
-    border: 1px solid $white-100;
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    background: $black-alt;
+.wrapper {
 
-    input {
-        @include reset-form-input;
-        @include text-sm-regular;
-        color: $white;
+    @include flex-container(column, nowrap, flex-start, stretch);
+
+
+    p {
+        padding: 10px 20px;
+        color: $white-400;
+        position: absolute;
+        bottom: 40px;
+        left: 0;
+        background: $black-600;
         width: 100%;
-        background: transparent;
+        backdrop-filter: blur(40px);
+        @include text-overflow-ellipsis;
+    }
 
-        &::placeholder {
-            color: $white-600;
+    .messageInput {
+
+        @include flex-container(row, nowrap, flex-start, center);
+        padding: 10px 20px;
+        border: 1px solid $white-100;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background: $black-alt;
+    
+        input {
+            @include reset-form-input;
+            @include text-sm-regular;
+            color: $white;
+            width: 100%;
+            background: transparent;
+    
+            &::placeholder {
+                color: $white-600;
+            }
         }
+    
     }
 
 }
+

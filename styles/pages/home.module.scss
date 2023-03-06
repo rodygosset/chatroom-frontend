@@ -52,6 +52,12 @@
         ul {
             @include flex-container(column, nowrap, flex-start, stretch);
             @include reset-list;
+            height: 100%;
+
+            -ms-overflow-style: initial;
+            scrollbar-width: initial;
+
+            overflow: scroll;
         }
 
     }

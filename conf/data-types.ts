@@ -30,6 +30,19 @@ export interface MessageCreate {
 }
 
 
+export const getMessageReplies = (messageID: string, replies: Message[]) => {
+    let messageReplies: Message[] = []
+    for(const message of replies) {
+        if(message.parent_id == messageID) {
+            messageReplies = [...messageReplies, message, ...getMessageReplies(message._id, replies)]
+        }
+    }
+    return messageReplies
+}
+
+export const getDirectReplies = (messageID: string, replies: Message[]) => replies.filter(reply => reply.parent_id == messageID)
+
+
 export interface Thread {
     _id: string;
     title: string;

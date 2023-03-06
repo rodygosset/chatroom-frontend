@@ -14,6 +14,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from './api/auth/[...nextauth]'
 import axios from 'axios'
 import { threadsURL } from '@conf/conf'
+import NewThreadForm from '@components/new-thread-form'
 
 
 interface Props {
@@ -30,20 +31,34 @@ const Home: NextPage<Props> = (
 
     const session = useSession()
     
-    const user = (session.data as MySession | null)?.user
+	const sessionData = session.data as MySession | null
+    const user = sessionData?.user
 
 	// state
 
-	const [threads] = useState<ThreadPreview[]>(data)
+	const [threads, setThreads] = useState<ThreadPreview[]>(data)
 
-	const [currentThreadID, setCurrentThreadID] = useState<string>()
+	const [currentThreadID, setCurrentThreadID] = useState<string | undefined>()
 
 	useEffect(() => console.log(threads), [threads])
 
+	const refreshThreads = () => {
+		axios.get<ThreadPreview[]>(`${threadsURL}&action=getAll`, {
+			headers: { Authorization: `Bearer ${sessionData?.access_token}` }
+		}).then(res => setThreads(res.data))
+	}
+
+	// manage thread creation form visibility
+
+	const [showForm, setShowForm] = useState(false)
+
 	// handlers
 
-	const handleNewThreadClick = () => {
-		// todo
+	const handleNewThreadClick = () => setShowForm(!showForm)
+
+	const handleThreadDelete = () => {
+		setCurrentThreadID(undefined)
+		refreshThreads()
 	}
 
 	// render
@@ -70,9 +85,21 @@ const Home: NextPage<Props> = (
 						New Thread
 					</Button>
 				</div>
+				{
+					showForm ?
+					<NewThreadForm
+						onSubmit={() => {
+							refreshThreads()
+							setShowForm(false)
+						}}
+					/>
+					:
+					<></>
+				}
 				<ul>
 				{
-					threads ?
+					// @ts-ignore
+					threads && threads.map && !showForm ?
 					threads.map(thread => {
 						return (
 							<ThreadCard 
@@ -80,6 +107,7 @@ const Home: NextPage<Props> = (
 								data={thread}
 								isSelected={currentThreadID == thread._id}
 								onClick={() => setCurrentThreadID(thread._id)}
+								onDelete={handleThreadDelete}
 							/>
 						)
 					})
