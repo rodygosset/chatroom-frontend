@@ -2,7 +2,7 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styles from "@styles/components/button.module.scss"
-import React, { LegacyRef } from "react";
+import React from "react";
 import { MouseEventHandler } from "react";
 
 interface Props {
@@ -37,7 +37,7 @@ const Button = ({
         fullWidth,
         hidden,
         className
-    }: Props, ref: LegacyRef<HTMLButtonElement>) => {
+    }: Props) => {
 
     const getClassNames = () => {
         let classNames = styles.button
@@ -61,7 +61,6 @@ const Button = ({
         <></>
         :
         <button
-            ref={ref}
             className={getClassNames()}
             onClick={handleClick}
             onMouseOver={onMouseOver}
@@ -73,4 +72,4 @@ const Button = ({
     )
 }
 
-export default React.forwardRef<HTMLButtonElement, Props>(Button)
+export default Button

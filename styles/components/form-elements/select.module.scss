@@ -1,0 +1,26 @@
+@import "@styles/base/_mixins.scss";
+@import "@styles/base/_typography.scss";
+@import "@styles/abstracts/_colors.scss";
+
+.container {
+
+    @include flex-container(column, nowrap, center, flex-start);
+    gap: 10px;
+    p {
+        @include button-text;
+        color: $white-400;
+    }
+
+    .select {
+
+        @include reset-select;
+    
+        @include text-md-regular;
+        color: $white;
+
+        padding: 10px 20px;
+        border: 1px solid $white-100;
+
+    }
+}
+

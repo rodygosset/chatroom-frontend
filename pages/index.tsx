@@ -6,15 +6,16 @@ import Head from 'next/head'
 import styles from '@styles/pages/home.module.scss'
 import { useEffect, useState } from 'react'
 import Button from '@components/button'
-import { faComments } from '@fortawesome/free-solid-svg-icons'
+import { faComments, faXmark } from '@fortawesome/free-solid-svg-icons'
 import ThreadViewer from '@components/thread-viewer'
-import { ThreadPreview } from '@conf/data-types'
+import { getThreadAuthors, ThreadPreview } from '@conf/data-types'
 import ThreadCard from '@components/thread-card'
 import { getServerSession } from 'next-auth'
 import { authOptions } from './api/auth/[...nextauth]'
 import axios from 'axios'
 import { threadsURL } from '@conf/conf'
 import NewThreadForm from '@components/new-thread-form'
+import Select from '@components/form-elements/select'
 
 
 interface Props {
@@ -61,6 +62,14 @@ const Home: NextPage<Props> = (
 		refreshThreads()
 	}
 
+	// select which threads to show based on selected user
+
+	const [selectedUser, setSelectedUser] = useState("all")
+
+	const getUserSelectOptions = () => ["all", ...getThreadAuthors(threads)]
+
+	const getThreadsBySelectedUser = () => threads.filter(thread => selectedUser == "all" ? true : thread.author_full_name == selectedUser)
+
 	// render
 
 	return (
@@ -80,11 +89,17 @@ const Home: NextPage<Props> = (
 				<div className={styles.sectionTitle}>
 					<h3>Threads</h3>
 					<Button
-						icon={faComments}
+						icon={showForm ? faXmark : faComments}
 						onClick={handleNewThreadClick}>
-						New Thread
+						{ showForm ? "Cancel" : "New Thread" }
 					</Button>
 				</div>
+				<Select
+					label="Threads started by user"
+					name="user"
+					options={getUserSelectOptions()}
+					onChange={value => setSelectedUser(value)}
+				/>
 				{
 					showForm ?
 					<NewThreadForm
@@ -100,7 +115,7 @@ const Home: NextPage<Props> = (
 				{
 					// @ts-ignore
 					threads && threads.map && !showForm ?
-					threads.map(thread => {
+					getThreadsBySelectedUser().map(thread => {
 						return (
 							<ThreadCard 
 								key={thread.title}

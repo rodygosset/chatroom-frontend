@@ -53,8 +53,7 @@ const MessageInput = (
                 <></>
             }
             <div className={styles.messageInput}>
-                <input 
-                    type="text" 
+                <textarea  
                     name="message"
                     placeholder="Type message..."
                     value={message}

@@ -30,8 +30,9 @@
         bottom: 0;
         left: 0;
         background: $black-alt;
+        gap: 10px;
     
-        input {
+        textarea {
             @include reset-form-input;
             @include text-sm-regular;
             color: $white;
@@ -41,6 +42,8 @@
             &::placeholder {
                 color: $white-600;
             }
+            
+            resize: vertical;
         }
     
     }

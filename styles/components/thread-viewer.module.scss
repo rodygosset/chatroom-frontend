@@ -45,6 +45,12 @@
             width: 100%;
             color: $white-600;
         }
+
+        p.highlightedMetaData {
+            @include text-md-regular;
+            width: 100%;
+            color: $success-600;
+        }
     
     }
 

@@ -62,3 +62,20 @@ export interface ThreadPreview {
     date: string;
     first_message_content: string;
 }
+
+export const getTotalUsersInThread = (thread: Thread) => {
+    const users: string[] = []
+    for(const message of thread.messages) {
+        if(!users.includes(message.author_full_name)) {
+            users.push(message.author_full_name)
+        }
+    }
+    return users.length
+}
+
+export const getThreadAuthors = (threads: ThreadPreview[]) => {
+    return threads.map(thread => thread.author_full_name).reduce<string[]>(
+        (unique, author) => unique.includes(author) ? unique : [...unique, author],
+        []
+    )
+}

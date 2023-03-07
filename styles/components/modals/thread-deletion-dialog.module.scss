@@ -1,0 +1,55 @@
+@import "@styles/base/_mixins.scss";
+@import "@styles/base/_typography.scss";
+@import "@styles/abstracts/_colors.scss";
+
+
+.modal {
+    @include flex-container(column, nowrap, center, flex-start);
+    gap: 20px;
+
+    width: 380px;
+    padding: 40px;
+
+    border-radius: 15px;
+
+    background: $black-alt;
+
+    box-shadow: 0px 30px 60px $black-600;
+
+    h4 {
+        @include header-4-semibold;
+        color: $white;
+    }
+    
+    p {
+        @include text-sm-regular;
+        color: $white-400;
+
+        span {
+            @include text-sm-bold;
+            color: $white;
+        }
+
+    }
+
+    .buttonsContainer {
+        @include flex-container(row, nowrap, stretch, center);
+        width: 100%;
+        gap: 20px;
+
+        button {
+            background: $white-100 !important;
+            color: $white !important;
+        }
+
+        .yesButton {
+            background: $error !important;
+            color: $white !important;
+
+            &:hover {
+                box-shadow: 0px 30px 60px $error-200 !important;
+            }
+        }
+
+    }
+}
