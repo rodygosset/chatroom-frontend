@@ -7,7 +7,7 @@ import { MouseEventHandler } from "react";
 
 interface Props {
     children: any;
-    onClick: (event?: any) => void;
+    onClick: (e?: any) => void;
     onMouseOver?: (event?: any) => void;
     onMouseLeave?: (event?: any) => void;
     type?: "button" | "submit" | "reset" | undefined;

@@ -62,7 +62,10 @@ const ThreadCard = (
                         className={styles.deleteButton}
                         icon={faTrashAlt}
                         role="tertiary"
-                        onClick={handleDelete}>
+                        onClick={(e: MouseEvent) => {
+                            e.stopPropagation()
+                            handleDelete()
+                        }}>
                         Delete
                     </Button>
                     :

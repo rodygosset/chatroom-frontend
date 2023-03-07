@@ -6,6 +6,7 @@ import { getUIDate } from "@utils/general";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import Button from "./button";
 import MessageInput from "./form-elements/message-input";
 import Reply from "./reply";
 
@@ -84,6 +85,14 @@ const ThreadViewer = (
                     <p className={styles.metaData}>By { getFirstMessage()?.author_full_name } &#x2022; {getUIDate(getFirstMessage()?.date)}</p>
                     <p className={styles.message}>{getFirstMessage()?.content}</p>
                     <p className={styles.highlightedMetaData}>{ getTotalUsersInThread(thread) } people in this thread</p>
+                    <Button
+                        className={styles.replyButton}
+                        role="tertiary"
+                        animateOnHover={false}
+                        hasPadding={false}
+                        onClick={() => setMessageReplyID(thread.first_message_id)}>
+                        Reply
+                    </Button>
                 </div>
                 <ul>
                 {

@@ -2,6 +2,7 @@
 @import "@styles/base/_mixins.scss";
 @import "@styles/base/_typography.scss";
 @import "@styles/abstracts/_colors.scss";
+@import "@styles/abstracts/_variables.scss";
 
 .container {
 
@@ -29,6 +30,29 @@
             color: $white-400;
         }
     
+    }
+
+    @media (max-width: $bp-md) {
+        @include flex-container(column, nowrap, center, center);
+        gap: 30px;
+
+        .illustrationContainer {
+            width: 80px;
+            height: 80px;
+        }
+
+        .userInfo {
+            align-items: center;
+
+            h5 {
+                @include header-4-semibold;
+            }
+    
+            p {
+                @include text-md-medium;
+            }
+        }
+
     }
     
 }

@@ -58,7 +58,7 @@ const Login: NextPage = () => {
     return (
         <main id={styles.container}>
             <Head>
-                <title>Sign In</title>
+                <title>ChatRoom - Sign In</title>
                 <meta 
                     name="description" 
                     content="Sign into the ChatRoom App" 

@@ -55,7 +55,7 @@ const Register: NextPage = () => {
     return (
         <main id={styles.container}>
             <Head>
-                <title>Sign Up</title>
+                <title>ChatRoom - Sign Up</title>
                 <meta 
                     name="description" 
                     content="Sign up for the ChatRoom App" 

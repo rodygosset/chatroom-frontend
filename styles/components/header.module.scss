@@ -42,4 +42,86 @@
 
     }
 
+    .navIcon, section.threadList {
+        display: none;
+    }
+
+    .mobileNav, .showThreadsButton {
+        display: none;
+        transition: all 200ms ease-in-out;
+    }
+
+
+    @media (max-width: $bp-md) {
+
+        border-bottom: 1px solid $white-100;
+
+        nav {
+            display: none;
+        }
+
+        .navIcon {
+            padding: 0px;
+            display: initial;
+        }
+
+        nav.mobileNav, section.threadList {
+            position: absolute;
+            width: 100vw;
+            height: calc(100vh - $nav-bar-height);
+            top: $nav-bar-height;
+            bottom: 0;
+            left: 0;
+            right: 0;
+
+            background: $black;
+
+            &.show {
+                visibility: visible;
+                opacity: 1;
+                backdrop-filter: blur(25px);
+            }
+    
+            &.hide {
+                visibility: hidden;
+                z-index: -200;
+                opacity: 0;
+                backdrop-filter: none;
+            }
+        }
+
+        nav.mobileNav {
+            display: initial;
+            padding-bottom: calc($nav-bar-height * 2);
+
+            @include flex-container(column, nowrap, center, center);
+            gap: 30px;
+
+            &.show {
+                z-index: 500;
+            }
+        }
+
+        section.threadList {
+            display: flex;
+            &.show {
+                z-index: 400;
+            }
+            
+        }
+
+        button.logOutButton {
+            border: 1px solid $white-100;
+    
+        }
+
+        .logoContainer {
+            display: none;
+        }
+
+        .showThreadsButton {
+            display: flex;
+        }
+    }
+
 }
