@@ -1,6 +1,7 @@
 import { getDirectReplies, getMessageReplies, Message } from "@conf/data-types"
 import styles from "@styles/components/reply.module.scss"
 import { getUIDate } from "@utils/general";
+import { useEffect, useState } from "react";
 import Button from "./button";
 
 interface Props {
@@ -19,6 +20,12 @@ const Reply = (
     }: Props
 ) => {
 
+    // state
+
+    const [directReplies, setDirectReplies] = useState(getDirectReplies(message._id, replies))
+
+    useEffect(() => setDirectReplies(getDirectReplies(message._id, replies)), [message, replies])
+
     // render
 
     return (
@@ -33,21 +40,27 @@ const Reply = (
                 onClick={onReply}>
                 Reply
             </Button>
-            <ul>
             {
-                getDirectReplies(message._id,replies).map((reply, index) => {
-                    return (
-                        <Reply 
-                            key={reply.author_full_name + "_" + index + "pare"}
-                            message={reply}
-                            onReply={() => setMessageReplyID(reply._id)}
-                            replies={getMessageReplies(reply._id, replies)}
-                            setMessageReplyID={setMessageReplyID}
-                        />
-                    )
-                })
+                directReplies && directReplies.length > 0 ?
+                <ul>
+                {
+                    directReplies.map((reply, index) => {
+                        return (
+                            <Reply 
+                                key={reply.author_full_name + "_" + index + "pare"}
+                                message={reply}
+                                onReply={() => setMessageReplyID(reply._id)}
+                                replies={getMessageReplies(reply._id, replies)}
+                                setMessageReplyID={setMessageReplyID}
+                            />
+                        )
+                    })
+                }
+                </ul>
+                :
+                <></>
             }
-            </ul>
+            
         </li>
     )
 }
